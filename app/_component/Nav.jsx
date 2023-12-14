@@ -45,7 +45,7 @@ const Nav = () => {
               <div className="sm:flex sm:gap-4">
                 <a
                   className="rounded-md bg-white px-5 py-2.5 text-sm font-medium text-blue-700 shadow shadow-orange-400 hover:bg-blue-900"
-                  href="/"
+                  href="/files"
                 >
                  Get Started
                 </a>
