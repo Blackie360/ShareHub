@@ -6,7 +6,7 @@ export default function Page() {
 <section className="bg-white">
   <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
     <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-      <img
+      <Image
         alt="Night"
         src="https://img.freepik.com/free-photo/online-cloud-data-storage-concept-cloudscape-digital-online-server-global-network-business-web-database-backup-computer-private-infrastructure-technology_90220-1345.jpg?t=st=1702574233~exp=1702577833~hmac=748aa85343ebc1aabf81c93464d83108cbbecbfedcc2165ad23348eb5708c3a5&w=996"
         className="absolute inset-0 h-full w-full object-cover opacity-80"
