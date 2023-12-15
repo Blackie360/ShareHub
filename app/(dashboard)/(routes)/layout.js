@@ -1,5 +1,6 @@
 import React from 'react'
 import SideNav from '../_component/SideNav'
+import TopHeader from '../_component/ToHeader'
 
 const layout = ({children}) => {
   return (
@@ -8,6 +9,7 @@ const layout = ({children}) => {
             <SideNav />
         </div>
         <div className='ml-64'>
+          <TopHeader />
         {children}
         </div>
       
