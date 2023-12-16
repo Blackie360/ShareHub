@@ -1,10 +1,11 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import UploadForm from './_components/UploadForm';
 import { app } from '@/firebaseconfig';
-import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 const Upload = () => {
+  const [progress, setProgress] = useState();
   const storage = getStorage(app);
 
   const uploadFile = async (file) => {
@@ -22,6 +23,13 @@ const Upload = () => {
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log('Upload is ' + progress + '% done');
+          setProgress(progress),
+
+          // Upload completed successfully, now we can get the download URL
+    progress==100 && getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      console.log('File available at', downloadURL);
+    });
+
         },
         (error) => {
           console.error('Error during upload:', error.message);
@@ -45,7 +53,8 @@ const Upload = () => {
           <span className="text-purple-700">share</span>
         </strong>
       </h2>
-      <UploadForm uploadBtnClick={(file) => uploadFile(file)} />
+      <UploadForm uploadBtnClick={(file) => uploadFile(file)}
+      progress={progress} />
     </div>
   );
 };
