@@ -3,8 +3,13 @@ import React, { useState } from 'react';
 import UploadForm from './_components/UploadForm';
 import { app } from '@/firebaseconfig';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import {doc, getFirestore, setDoc} from 'firebase/firestore';
+import { useUser } from "@clerk/nextjs";
+import generateRandomString from '@/app/Actions/GenerateRandom';
 
 const Upload = () => {
+  const {user}=useUser();
+  const db = getFirestore(app);
   const [progress, setProgress] = useState();
   const storage = getStorage(app);
 
@@ -28,6 +33,7 @@ const Upload = () => {
           // Upload completed successfully, now we can get the download URL
     progress==100 && getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
       console.log('File available at', downloadURL);
+      saveInfo(file, downloadURL);
     });
 
         },
@@ -44,6 +50,21 @@ const Upload = () => {
       console.error('Error uploading file:', error.message);
     }
   };
+  const saveInfo=async(file, downloadURL)=>{
+    const docId=generateRandomString().toString();
+    await setDoc(doc(db, "uploadedFile", docId),{
+      fileName:file?.name,
+      fileSize:file?.size,
+      fileType:file?.type,
+      fileUrl:downloadURL,
+      userEmail:user?.primaryEmailAddress.emailAddress,
+      userName:user?.fullName,
+      password:'',
+      id:generateRandomString(),
+      shortUrl:process.env.NEXT_PUBLIC_BASE_URL+generateRandomString()
+
+    });
+  }
 
   return (
     <div className="p-5 px-8 md:px-8">
