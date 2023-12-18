@@ -94,7 +94,7 @@ const Upload = () => {
       setTimeout(() => {
         console.log("Trying to redirect now");
         router.push('/preview/' + fileDocId);
-      }, 500);
+      }, 2000);
     }
   }, [fileDocId]);
 
