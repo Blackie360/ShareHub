@@ -70,7 +70,7 @@ const Upload = () => {
     return result;
   };
 
-  // Save info  
+ 
   const saveInfo = async (file, downloadURL) => {
     const docId = randomString();
     await setDoc(doc(db, "uploadedFile", docId), {
