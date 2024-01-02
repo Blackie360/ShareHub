@@ -7,7 +7,6 @@ import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import { useUser } from "@clerk/nextjs";
 import generateRandomString from '@/app/Actions/GenerateRandom';
 import { useRouter } from 'next/navigation';
-
 const Upload = () => {
   const router = useRouter();
   const { user } = useUser();
@@ -30,7 +29,7 @@ const Upload = () => {
         'state_changed',
         (snapshot) => {
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
           console.log('Upload is ' + progress + '% done');
           setProgress(progress);
 
@@ -70,7 +69,6 @@ const Upload = () => {
     return result;
   };
 
- 
   const saveInfo = async (file, downloadURL) => {
     const docId = randomString();
     await setDoc(doc(db, "uploadedFile", docId), {
@@ -82,7 +80,7 @@ const Upload = () => {
       userName: user?.fullName,
       password: '',
       id: docId,
-      shortUrl: process.env.NEXT_PUBLIC_BASE_URL + generateRandomString()
+      shortUrl: process.env.NEXT_PUBLIC_BASE_URL + generateRandomString(),
     });
     setFileDocId(docId);
     setUploadCompleted(true);
