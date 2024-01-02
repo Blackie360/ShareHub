@@ -58,7 +58,7 @@ const Upload = () => {
 
   // Random string 
   const randomString = () => {
-    const length = 10; // You can adjust the length as needed
+    const length = 10; 
     const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
 
@@ -89,14 +89,17 @@ const Upload = () => {
   };
 
   useEffect(() => {
-    if (fileDocId) {
+    if (uploadCompleted) {
       console.log("Redirecting...");
-      setTimeout(() => {
+      const redirectTimer = setTimeout(() => {
         console.log("Trying to redirect now");
         router.push('/preview/' + fileDocId);
       }, 2000);
+
+      // Clear the timer if the component unmounts before the timeout
+      return () => clearTimeout(redirectTimer);
     }
-  }, [fileDocId]);
+  }, [uploadCompleted, fileDocId, router]);
 
   return (
     <div className="p-5 px-8 md:px-8">
