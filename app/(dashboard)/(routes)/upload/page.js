@@ -80,7 +80,7 @@ const Upload = () => {
       userName: user?.fullName,
       password: '',
       id: docId,
-      shortUrl: process.env.NEXT_PUBLIC_BASE_URL + generateRandomString(),
+      shortUrl: process.env.NEXT_PUBLIC_BASE_URL + randomString(),
     });
     setFileDocId(docId);
     setUploadCompleted(true);
