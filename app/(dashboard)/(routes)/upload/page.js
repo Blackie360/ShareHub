@@ -1,3 +1,4 @@
+// Import necessary modules
 "use client";
 import React, { useEffect, useState } from 'react';
 import UploadForm from './_components/UploadForm';
@@ -5,37 +6,34 @@ import { app } from '@/firebaseconfig';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import { useUser } from "@clerk/nextjs";
-import generateRandomString from '@/app/Actions/GenerateRandom';
-import { useRouter } from 'next/navigation';  // Updated import statement
+import { useRouter } from 'next/router';
 
+// Define the Upload component
 const Upload = () => {
-  const router = useRouter();  // Updated hook
   const { user } = useUser();
   const db = getFirestore(app);
   const [fileDocId, setFileDocId] = useState('');
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const [progress, setProgress] = useState();
-  const storage = getStorage(app);
 
+  // Function to upload a file
   const uploadFile = async (file) => {
     try {
       const metadata = {
         contentType: file.type,
       };
 
-      const storageRef = ref(storage, 'file-upload/' + file?.name);
+      const storageRef = ref(getStorage(app), 'file-upload/' + file?.name);
       const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
       uploadTask.on(
         'state_changed',
         (snapshot) => {
           const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          console.log('Upload is ' + progress + '% done');
           setProgress(progress);
 
           if (uploadTask.snapshot.state === "success") {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              console.log('File available at', downloadURL);
               saveInfo(file, downloadURL);
             });
           }
@@ -52,6 +50,7 @@ const Upload = () => {
     }
   };
 
+  // Function to generate a random string
   const randomString = () => {
     const length = 10; 
     const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -65,6 +64,7 @@ const Upload = () => {
     return result;
   };
 
+  // Function to save file information
   const saveInfo = async (file, downloadURL) => {
     const docId = randomString();
     await setDoc(doc(db, "uploadedFile", docId), {
@@ -82,12 +82,16 @@ const Upload = () => {
     setUploadCompleted(true);
   };
 
+
+
+  // useEffect to handle redirection after upload completion
   useEffect(() => {
     const redirectUser = async () => {
       if (uploadCompleted) {
         console.log("Redirecting...");
         try {
-          await router.push('/preview/' + fileDocId);
+          // Using window.location.href for navigation
+          window.location.href = '/preview/' + fileDocId;
           console.log("Redirected successfully");
         } catch (error) {
           console.error("Error redirecting:", error.message);
@@ -96,8 +100,9 @@ const Upload = () => {
     };
 
     redirectUser();
-  }, [uploadCompleted, fileDocId, router]);
+  }, [uploadCompleted, fileDocId]);
 
+  // Render the UploadForm component
   return (
     <div className="p-5 px-8 md:px-8">
       <h2 className="text-[20px] text-center m-5">
@@ -111,4 +116,5 @@ const Upload = () => {
   );
 };
 
+// Export the Upload component
 export default Upload;
