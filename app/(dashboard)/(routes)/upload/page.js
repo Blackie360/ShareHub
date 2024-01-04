@@ -82,7 +82,7 @@ const Upload = () => {
     setUploadCompleted(true);
   };
 
-
+  const router = useRouter();
 
   // useEffect to handle redirection after upload completion
   useEffect(() => {
@@ -90,8 +90,7 @@ const Upload = () => {
       if (uploadCompleted) {
         console.log("Redirecting...");
         try {
-          // Using window.location.href for navigation
-          window.location.href = '/preview/' + fileDocId;
+          await router.push('/preview/' + fileDocId);
           console.log("Redirected successfully");
         } catch (error) {
           console.error("Error redirecting:", error.message);
@@ -100,7 +99,7 @@ const Upload = () => {
     };
 
     redirectUser();
-  }, [uploadCompleted, fileDocId]);
+  }, [uploadCompleted, fileDocId, router]);
 
   // Render the UploadForm component
   return (
@@ -116,5 +115,4 @@ const Upload = () => {
   );
 };
 
-// Export the Upload component
 export default Upload;
