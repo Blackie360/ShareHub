@@ -6,8 +6,10 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import { useUser } from "@clerk/nextjs";
 import generateRandomString from '@/app/Actions/GenerateRandom';
+import { useRouter } from 'next/navigation';  // Updated import statement
 
 const Upload = () => {
+  const router = useRouter();  // Updated hook
   const { user } = useUser();
   const db = getFirestore(app);
   const [fileDocId, setFileDocId] = useState('');
@@ -85,8 +87,7 @@ const Upload = () => {
       if (uploadCompleted) {
         console.log("Redirecting...");
         try {
-          // Use window.location.href for a client-side redirect
-          window.location.href = '/preview/' + fileDocId;
+          await router.push('/preview/' + fileDocId);
           console.log("Redirected successfully");
         } catch (error) {
           console.error("Error redirecting:", error.message);
@@ -95,7 +96,7 @@ const Upload = () => {
     };
 
     redirectUser();
-  }, [uploadCompleted, fileDocId]);
+  }, [uploadCompleted, fileDocId, router]);
 
   return (
     <div className="p-5 px-8 md:px-8">
