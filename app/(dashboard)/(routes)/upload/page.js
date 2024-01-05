@@ -6,7 +6,12 @@ import { app } from '@/firebaseconfig';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic'; // Import dynamic from 'next/dynamic'
+
+// Use dynamic import for useRouter
+const useRouter = dynamic(() => import('next/router').then((mod) => mod.useRouter), {
+  ssr: false,
+});
 
 // Define the Upload component
 const Upload = () => {
@@ -15,6 +20,7 @@ const Upload = () => {
   const [fileDocId, setFileDocId] = useState('');
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const [progress, setProgress] = useState();
+  const router = useRouter(); // Declare the router variable
 
   // Function to upload a file
   const uploadFile = async (file) => {
@@ -52,7 +58,7 @@ const Upload = () => {
 
   // Function to generate a random string
   const randomString = () => {
-    const length = 10; 
+    const length = 10;
     const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
 
@@ -81,8 +87,6 @@ const Upload = () => {
     setFileDocId(docId);
     setUploadCompleted(true);
   };
-
-  const router = useRouter();
 
   // useEffect to handle redirection after upload completion
   useEffect(() => {
