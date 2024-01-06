@@ -1,78 +1,64 @@
-// Import necessary modules
-"use client";
-import React, { useEffect, useState } from 'react';
+// Use dynamic import for useRouter and import useRouterReady directly
+"use client"
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 import UploadForm from './_components/UploadForm';
 import { app } from '@/firebaseconfig';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import { useUser } from "@clerk/nextjs";
-import dynamic from 'next/dynamic'; // Import dynamic from 'next/dynamic'
 
 // Use dynamic import for useRouter
-const useRouter = dynamic(() => import('next/router').then((mod) => mod.useRouter), {
-  ssr: false,
-});
+const useRouter = dynamic(() => import('next/router').then(mod => mod.useRouter), { ssr: false });
+const useRouterReady = dynamic(() => import('next/router').then(mod => mod.useRouterReady), { ssr: false });
 
-// Define the Upload component
 const Upload = () => {
   const { user } = useUser();
-  const db = getFirestore(app);
+  const router = useRouter();
+  const routerReady = useRouterReady();
+
   const [fileDocId, setFileDocId] = useState('');
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const [progress, setProgress] = useState();
-  const router = useRouter(); // Declare the router variable
 
-  // Function to upload a file
+  const db = getFirestore(app);
+
+  const randomString = () => {
+    const length = 10;
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters.charAt(randomIndex);
+    }
+    return result;
+  };
+
   const uploadFile = async (file) => {
     try {
-      const metadata = {
-        contentType: file.type,
-      };
-
+      const metadata = { contentType: file.type };
       const storageRef = ref(getStorage(app), 'file-upload/' + file?.name);
       const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          setProgress(progress);
+      uploadTask.on('state_changed', snapshot => {
+        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        setProgress(progress);
 
-          if (uploadTask.snapshot.state === "success") {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              saveInfo(file, downloadURL);
-            });
-          }
-        },
-        (error) => {
-          console.error('Error during upload:', error.message);
-        },
-        () => {
-          console.log('File uploaded successfully');
+        if (uploadTask.snapshot.state === "success") {
+          getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+            saveInfo(file, downloadURL);
+          });
         }
-      );
+      });
+
     } catch (error) {
       console.error('Error uploading file:', error.message);
     }
   };
 
-  // Function to generate a random string
-  const randomString = () => {
-    const length = 10;
-    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      result += characters.charAt(randomIndex);
-    }
-
-    return result;
-  };
-
-  // Function to save file information
   const saveInfo = async (file, downloadURL) => {
     const docId = randomString();
+
     await setDoc(doc(db, "uploadedFile", docId), {
       fileName: file?.name,
       fileSize: file?.size,
@@ -82,41 +68,35 @@ const Upload = () => {
       userName: user?.fullName,
       password: '',
       id: docId,
-      shortUrl: process.env.NEXT_PUBLIC_BASE_URL + randomString(),
+      shortUrl: process.env.NEXT_PUBLIC_BASE_URL + randomString()
     });
+
     setFileDocId(docId);
     setUploadCompleted(true);
+
   };
 
-  // useEffect to handle redirection after upload completion
   useEffect(() => {
-    const redirectUser = async () => {
-      if (uploadCompleted) {
-        console.log("Redirecting...");
-        try {
-          await router.push('/preview/' + fileDocId);
-          console.log("Redirected successfully");
-        } catch (error) {
-          console.error("Error redirecting:", error.message);
-        }
-      }
-    };
+    console.log('redirecting started');
 
-    redirectUser();
-  }, [uploadCompleted, fileDocId, router]);
+    if (fileDocId && router) {
+      console.log('redirecting...');
+      router.push('/preview/' + fileDocId);
+    }
 
-  // Render the UploadForm component
+  }, [fileDocId, router]);
+
   return (
-    <div className="p-5 px-8 md:px-8">
-      <h2 className="text-[20px] text-center m-5">
-        <strong>
-          Start <span className="text-purple-700">Uploading</span> file and{' '}
-          <span className="text-purple-700">share</span>
-        </strong>
-      </h2>
-      <UploadForm uploadBtnClick={(file) => uploadFile(file)} progress={progress} />
+    <div>
+      <h2>Upload and Share</h2>
+
+      <UploadForm
+        uploadBtnClick={(file) => uploadFile(file)}
+        progress={progress}
+      />
     </div>
   );
+
 };
 
 export default Upload;
