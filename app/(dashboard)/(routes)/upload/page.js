@@ -36,7 +36,7 @@ const uploadFile = async (file) => {
     const storageRef = ref(getStorage(app), 'file-upload/' + file?.name);
     const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
-    uploadTask.on('state_changed', snapshot => {
+    uploadTask.on('state_changed', snapshot => { //usisheke hapa nimeteseka sana
       const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       setProgress(progress);
     }, error => {
@@ -50,6 +50,7 @@ const uploadFile = async (file) => {
         console.error('Error getting download URL:', error.message);
       }
     });
+
 
   } catch (error) {
     console.error('Error uploading file:', error.message);
