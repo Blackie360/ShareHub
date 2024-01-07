@@ -1,25 +1,21 @@
-// Use dynamic import for useRouter and import useRouterReady directly
-"use client"
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
-import UploadForm from './_components/UploadForm';
+"use client";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { app } from '@/firebaseconfig';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
-import { doc, getFirestore, setDoc } from 'firebase/firestore';
+import { doc, getFirestore, setDoc } from 'firebase/firestore'; 
 import { useUser } from "@clerk/nextjs";
-
-// Use dynamic import for useRouter
-const useRouter = dynamic(() => import('next/router').then(mod => mod.useRouter), { ssr: false });
-const useRouterReady = dynamic(() => import('next/router').then(mod => mod.useRouterReady), { ssr: false });
+import UploadForm from './_components/UploadForm';
 
 const Upload = () => {
+
   const { user } = useUser();
-  const router = useRouter();
-  const routerReady = useRouterReady();
 
   const [fileDocId, setFileDocId] = useState('');
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const [progress, setProgress] = useState();
+
+  const router = useRouter();
 
   const db = getFirestore(app);
 
@@ -57,6 +53,7 @@ const Upload = () => {
   };
 
   const saveInfo = async (file, downloadURL) => {
+    
     const docId = randomString();
 
     await setDoc(doc(db, "uploadedFile", docId), {
@@ -64,27 +61,16 @@ const Upload = () => {
       fileSize: file?.size,
       fileType: file?.type,
       fileUrl: downloadURL,
-      userEmail: user?.primaryEmailAddress.emailAddress,
+      userEmail: user?.primaryEmailAddress?.emailAddress,
       userName: user?.fullName,
       password: '',
       id: docId,
       shortUrl: process.env.NEXT_PUBLIC_BASE_URL + randomString()
     });
 
-    setFileDocId(docId);
-    setUploadCompleted(true);
+    router.push('/preview/' + docId);
 
   };
-
-  useEffect(() => {
-    console.log('redirecting started');
-
-    if (fileDocId && router) {
-      console.log('redirecting...');
-      router.push('/preview/' + fileDocId);
-    }
-
-  }, [fileDocId, router]);
 
   return (
     <div>
@@ -92,8 +78,9 @@ const Upload = () => {
 
       <UploadForm
         uploadBtnClick={(file) => uploadFile(file)}
-        progress={progress}
+        progress={progress} 
       />
+
     </div>
   );
 
