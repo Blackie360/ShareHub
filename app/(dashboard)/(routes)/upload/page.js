@@ -30,27 +30,32 @@ const Upload = () => {
     return result;
   };
 
-  const uploadFile = async (file) => {
-    try {
-      const metadata = { contentType: file.type };
-      const storageRef = ref(getStorage(app), 'file-upload/' + file?.name);
-      const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+const uploadFile = async (file) => {
+  try {
+    const metadata = { contentType: file.type };
+    const storageRef = ref(getStorage(app), 'file-upload/' + file?.name);
+    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
-      uploadTask.on('state_changed', snapshot => {
-        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        setProgress(progress);
-
-        if (uploadTask.snapshot.state === "success") {
-          getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-            saveInfo(file, downloadURL);
-          });
-        }
-      });
-
-    } catch (error) {
+    uploadTask.on('state_changed', snapshot => {
+      const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+      setProgress(progress);
+    }, error => {
       console.error('Error uploading file:', error.message);
-    }
-  };
+    }, async () => {
+      // Upload completed successfully
+      try {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        saveInfo(file, downloadURL);
+      } catch (error) {
+        console.error('Error getting download URL:', error.message);
+      }
+    });
+
+  } catch (error) {
+    console.error('Error uploading file:', error.message);
+  }
+};
+
 
   const saveInfo = async (file, downloadURL) => {
     
