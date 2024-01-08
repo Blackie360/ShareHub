@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 
 const FilePreview = ({params}) => {
   const db = getFirestore(app);
+  const [file, setFile] = useState();
     useEffect(()=>{
 
         console.log(params?.fileId)
@@ -15,6 +16,7 @@ const FilePreview = ({params}) => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
+        setFile(docSnap.data())
       } else {
         // docSnap.data() will be undefined in this case
         console.log("No such document!");
