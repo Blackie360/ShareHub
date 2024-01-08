@@ -1,15 +1,25 @@
 "use client";
 import { app } from '@/firebaseconfig';
-import { getFirestore } from 'firebase/firestore';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import React, { useEffect } from 'react'
 
 const FilePreview = ({params}) => {
-  const db = getFirestoreFirestore(appp);
+  const db = getFirestore(app);
     useEffect(()=>{
 
         console.log(params?.fileId)
+        params?.fileId&& getFileInfo();
     },[])
-    const 
+    const getFileInfo=async()=>{
+      const docRef = doc(db, "uploadedFile", params?.fileId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    }
   return (
     <div>
       preview
