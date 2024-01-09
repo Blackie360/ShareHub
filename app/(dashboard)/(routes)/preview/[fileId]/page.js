@@ -1,7 +1,11 @@
 "use client";
 import { app } from '@/firebaseconfig';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ArrowLeftSquare } from 'lucide-react';
+import FileInform from '../component/FileInform';
+import FileShareForm from '../component/FileShareForm';
 
 const FilePreview = ({params}) => {
   const db = getFirestore(app);
@@ -24,7 +28,11 @@ const FilePreview = ({params}) => {
     }
   return (
     <div>
-      preview
+     <Link href='/upload' className='flex gap-3'>  <ArrowLeftSquare /> </Link>
+     <div className='grid grid-cols-1 md:grid-cols-2 mt-5'>
+      <FileInform file={file} />
+      <FileShareForm file={file} />
+     </div>
     </div>
   )
 }
