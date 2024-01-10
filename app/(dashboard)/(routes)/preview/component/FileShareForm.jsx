@@ -17,13 +17,11 @@ const FileShareForm = ({ file }) => {
         const generatedShortLink = generateShortLink();
         setShortLink(generatedShortLink);
 
-        // Copy short link to clipboard
         copyToClipboard(generatedShortLink);
 
-        // Set isCopied to true for a brief indication
+      
         setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000); // Reset isCopied after 2 seconds
-      } else {
+        setTimeout(() => setIsCopied(false), 5000);
         console.error('File URL is missing.');
       }
     } catch (error) {
@@ -33,8 +31,7 @@ const FileShareForm = ({ file }) => {
   };
 
   const generateShortLink = () => {
-    // Placeholder logic for generating a short link
-    // Replace this with your actual logic
+   
     const randomString = () => Math.random().toString(36).substring(7);
     return `${process.env.NEXT_PUBLIC_BASE_URL}/${randomString()}`;
   };
