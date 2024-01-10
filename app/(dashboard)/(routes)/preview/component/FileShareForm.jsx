@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Clipboard } from 'lucide-react'; 
+import { Eye, EyeOff } from 'lucide-react';
 
-const FileShareForm = ({ file }) => {
+const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [shortLink, setShortLink] = useState('');
@@ -10,7 +10,6 @@ const FileShareForm = ({ file }) => {
 
   const handleShare = async () => {
     try {
-      // Assuming 'file' has the required properties like 'fileUrl'
       const longUrl = file?.fileUrl;
 
       if (longUrl) {
@@ -19,19 +18,25 @@ const FileShareForm = ({ file }) => {
 
         copyToClipboard(generatedShortLink);
 
-      
         setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 5000);
+        setTimeout(() => setIsCopied(false), 2000);
+
+        const shareData = {
+          email,
+          password,
+          shortLink: generatedShortLink,
+        };
+
+        onShare(shareData);
+      } else {
         console.error('File URL is missing.');
       }
     } catch (error) {
-      // Handle error
       console.error('Error generating short link:', error.message);
     }
   };
 
   const generateShortLink = () => {
-   
     const randomString = () => Math.random().toString(36).substring(7);
     return `${process.env.NEXT_PUBLIC_BASE_URL}/${randomString()}`;
   };
@@ -46,6 +51,11 @@ const FileShareForm = ({ file }) => {
       });
   };
 
+  const handlePasswordSave = () => {
+    // Trigger the callback function passed from the parent component (FilePreview)
+    onPasswordSave(password);
+  };
+
   return (
     <div className="bg-gray-100 p-4 rounded-md">
       <h2 className="text-xl font-bold mb-4">Share File</h2>
@@ -54,14 +64,12 @@ const FileShareForm = ({ file }) => {
         {shortLink && (
           <div className="mb-2">
             <p className="text-gray-600">
-              Short Link: 
-              {' '}
+              Short Link:{' '}
               <span className="font-semibold">
                 <a href={shortLink} target="_blank" rel="noopener noreferrer">
                   {shortLink}
                 </a>
-              </span>
-              {' '}
+              </span>{' '}
               <button
                 className="text-blue-500 underline cursor-pointer"
                 onClick={() => {
@@ -103,6 +111,12 @@ const FileShareForm = ({ file }) => {
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
+        <button
+          className="mt-2 text-sm text-blue-500 underline cursor-pointer"
+          onClick={handlePasswordSave}
+        >
+          Save Password
+        </button>
       </div>
 
       <button
