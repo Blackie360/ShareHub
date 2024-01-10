@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { Eye, EyeOff, Clipboard } from 'lucide-react'; 
 
 const FileShareForm = ({ file }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [shortLink, setShortLink] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleShare = async () => {
     try {
@@ -16,6 +19,10 @@ const FileShareForm = ({ file }) => {
 
         // Copy short link to clipboard
         copyToClipboard(generatedShortLink);
+
+        // Set isCopied to true for a brief indication
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000); // Reset isCopied after 2 seconds
       } else {
         console.error('File URL is missing.');
       }
@@ -44,30 +51,34 @@ const FileShareForm = ({ file }) => {
 
   return (
     <div className="bg-gray-100 p-4 rounded-md">
-      {shortLink && (
-        <div className="mb-4">
-          <p className="text-gray-600">
-            Short Link: 
-            {' '}
-            <span className="font-semibold">
-              <a href={shortLink} target="_blank" rel="noopener noreferrer">
-                {shortLink}
-              </a>
-            </span>
-            {' '}
-            <button
-              className="text-blue-500 underline cursor-pointer"
-              onClick={() => copyToClipboard(shortLink)}
-            >
-              📋 Copy
-            </button>
-          </p>
-        </div>
-      )}
-
       <h2 className="text-xl font-bold mb-4">Share File</h2>
 
       <div className="mb-4">
+        {shortLink && (
+          <div className="mb-2">
+            <p className="text-gray-600">
+              Short Link: 
+              {' '}
+              <span className="font-semibold">
+                <a href={shortLink} target="_blank" rel="noopener noreferrer">
+                  {shortLink}
+                </a>
+              </span>
+              {' '}
+              <button
+                className="text-blue-500 underline cursor-pointer"
+                onClick={() => {
+                  copyToClipboard(shortLink);
+                  setIsCopied(true);
+                  setTimeout(() => setIsCopied(false), 2000);
+                }}
+              >
+                {isCopied ? 'Copied! 🎉' : '📋 Copy'}
+              </button>
+            </p>
+          </div>
+        )}
+
         <label className="block text-sm font-medium text-gray-600">Email</label>
         <input
           type="email"
@@ -78,15 +89,23 @@ const FileShareForm = ({ file }) => {
         />
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 relative">
         <label className="block text-sm font-medium text-gray-600">Password</label>
-        <input
-          type="password"
-          className="mt-1 p-2 w-full border rounded-md"
-          placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="flex items-center">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            className="mt-1 p-2 w-full border rounded-md pr-10"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
       </div>
 
       <button
