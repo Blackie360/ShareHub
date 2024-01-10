@@ -28,7 +28,7 @@ const FilePreview = ({params}) => {
     }
   return (
     <div>
-     <Link href='/upload' className='flex gap-3'>  <ArrowLeftSquare /> </Link>
+     <Link href='/upload' className='flex gap-3'>  <ArrowLeftSquare w-12 h-12 /> </Link>
      <div className='grid grid-cols-1 md:grid-cols-2 mt-5'>
       <FileInform file={file} />
       <FileShareForm file={file} />
