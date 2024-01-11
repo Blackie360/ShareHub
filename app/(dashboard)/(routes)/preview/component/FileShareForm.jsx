@@ -112,7 +112,7 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
           </button>
         </div>
         <button
-          className="mt-2 text-sm text-blue-500 underline cursor-pointer"
+          className="mt-2 text-sm text-blue-500 underline cursor-pointer rounded-md"
           onClick={handlePasswordSave}
         >
           Save Password
