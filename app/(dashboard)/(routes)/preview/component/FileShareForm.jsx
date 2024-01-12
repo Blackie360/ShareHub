@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import Globalapi from '@/app/Actions/Globalapi';
 
 const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   const [email, setEmail] = useState('');
@@ -52,9 +53,15 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   };
 
   const handlePasswordSave = () => {
-    // Trigger the callback function passed from the parent component (FilePreview)
+    
     onPasswordSave(password);
   };
+  const sendEmail=()=>{
+    const data={}
+    Globalapi.SendEmail(data).then(resp=>{
+        console.log(resp);
+    })
+  }
 
   return (
     <div className="bg-gray-100 p-4 rounded-md">
@@ -121,7 +128,11 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
 
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        onClick={handleShare}
+        onClick={() => {
+          handleShare();
+          sendEmail();
+        }}
+
       >
         Share File
       </button>
