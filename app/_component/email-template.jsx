@@ -24,11 +24,11 @@ export const EmailTemplate = ({
       <Body style={main}>
         <Container>
           <Section style={logo}>
-            <Img src={`${baseUrl}/static/yelp-logo.png`} />
+            <Img src={} />
           </Section>
 
           <Section style={content}>
-            <Img width={620} src={`${baseUrl}/static/yelp-header.png`} />
+            <Img width={620} src={`${baseUrl}/`} />
 
             <Row style={{ ...boxInfos, paddingBottom: '0' }}>
               <Column>
