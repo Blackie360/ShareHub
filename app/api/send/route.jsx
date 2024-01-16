@@ -1,18 +1,17 @@
-
 import { EmailTemplate } from '../../_component/email-template.jsx';
 import { Resend } from 'resend';
-
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req) {
-  const responce=await req.json();
   try {
+    const { firstName, file } = await req.json();
+
     const data = await resend.emails.send({
       from: 'shareit@resend.dev',
       to: ['felixkent360@gmail.com'],
-      subject: 'Hello world',
-      react: EmailTemplate({ firstName: 'John' }),
+      subject: 'file shared',
+      react: EmailTemplate({ firstName, file }),
     });
 
     return Response.json(data);
