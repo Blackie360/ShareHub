@@ -9,6 +9,7 @@ import { getAnalytics } from "firebase/analytics";
 const firebaseConfig = {
   apiKey: "AIzaSyCWEgFCFj-E_AoIGMoUum-_l6XkELuqYuw",
   authDomain: "sharehub-dab7b.firebaseapp.com",
+  databaseURL: "https://sharehub-dab7b-default-rtdb.firebaseio.com",
   projectId: "sharehub-dab7b",
   storageBucket: "sharehub-dab7b.appspot.com",
   messagingSenderId: "753341972235",
@@ -17,5 +18,5 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
