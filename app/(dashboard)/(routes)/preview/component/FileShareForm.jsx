@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import Globalapi from '@/app/Actions/Globalapi';
+import Globalapi from 'app/Actions/Globalapi';
 
 const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   const [email, setEmail] = useState('');

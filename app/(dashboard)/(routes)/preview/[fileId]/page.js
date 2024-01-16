@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { ArrowLeftSquare } from 'lucide-react';
 import FileInform from '../component/FileInform';
 import FileShareForm from '../component/FileShareForm';
-import { app } from '@/firebaseconfig';
+
 import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
+import { app } from '@/firebaseconfig';
 
 const FilePreview = ({ params }) => {
   const db = getFirestore(app);
