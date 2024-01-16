@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Globalapi from 'app/Actions/Globalapi';
+import { useUser } from "@clerk/nextjs";
 
 const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   const [shortLink, setShortLink] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const user = useUser();
 
   const handleShare = async () => {
     try {
