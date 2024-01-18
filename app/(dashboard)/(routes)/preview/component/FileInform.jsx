@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 
 const FileInform = ({ file }) => {
+  const bytesToMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2);
   if (!file) {
     return <div>Loading...</div>;
   }
@@ -22,8 +23,8 @@ const FileInform = ({ file }) => {
         />
       </div>
       <p>File Name: {fileName}</p>
-      <p>File Size: {fileSize} bytes</p>
-      {/* Add more details as needed */}
+      <p>File Size: {bytesToMB(file.fileSize)} MB</p>
+     
     </div>
   );
 };

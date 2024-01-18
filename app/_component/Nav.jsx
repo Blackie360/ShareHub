@@ -25,7 +25,7 @@ const Nav = () => {
             </li>
 
             <li>
-              <a className="text-gray-500 transition hover:text-gray-500/75" href="/"> Upload </a>
+              <a className="text-gray-500 transition hover:text-gray-500/75" href="/upload"> Upload </a>
             </li>
 
             <li>
