@@ -12,7 +12,7 @@ export async function POST(req) {
     const data = await resend.emails.send({
       from: 'shareit@resend.dev',
       to: ['felixkent360@gmail.com'],
-      subject: 'Hello world',
+      subject: responce?.fullName+"Shared a file with you",
       react: EmailTemplate({responce}),
     });
 
