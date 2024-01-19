@@ -1,19 +1,22 @@
 import * as React from 'react';
 
-export const EmailTemplate = ({ firstName }) => (
-  <div className="bg-gray-900 text-white p-8 rounded-md">
-    <h1 className="text-4xl font-bold mb-4">Welcome to ShareHub, {firstName}!</h1>
-    <p className="text-lg mb-4">
-      You've received a file from ShareHub. Click the link below to access it.
-    </p>
-    <a
-      href="#your_file_link"
-      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 inline-block"
-    >
-      Access Your File
-    </a>
-    <p className="mt-4 text-sm">
-      If you have any questions or concerns, please contact our support team.
-    </p>
-  </div>
-);
+const EmailTemplate = ({ emailToSend, userName, fileName, fileSize, fileType, shortLink }) => {
+  const bytesToMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2);
+
+  return (
+    <div>
+      <h1>Welcome, {userName.split("@"[0])}!</h1>
+      {fileName && (
+        <div>
+          <p>File Information:</p>
+          <p>File Name: {fileName}</p>
+          <p>File Size: {bytesToMB(fileSize)} MB</p>
+          <p>File Type: {fileType}</p>
+          <p>Short Link: {shortLink}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default EmailTemplate;
