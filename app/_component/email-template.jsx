@@ -1,3 +1,4 @@
+// _component/email-template.jsx
 import * as React from 'react';
 
 const EmailTemplate = ({ emailToSend, userName, fileName, fileSize, fileType, shortLink }) => {
@@ -5,7 +6,7 @@ const EmailTemplate = ({ emailToSend, userName, fileName, fileSize, fileType, sh
 
   return (
     <div>
-      <h1>Welcome, {userName.split("@"[0])}!</h1>
+      <h1>Welcome, {userName.split("@")[0]}!</h1>
       {fileName && (
         <div>
           <p>File Information:</p>
