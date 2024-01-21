@@ -1,11 +1,14 @@
-import * as React from 'react';
+// _component/email-template.jsx
 
-const EmailTemplate = ({ emailToSend, userName, fileName, fileSize, fileType, shortLink }) => {
+import React from 'react';
+import { useUser } from "@clerk/nextjs";
+
+const EmailTemplate = ({ userName, fileName, fileSize, fileType, shortLink }) => {
   const bytesToMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2);
 
   return (
     <div>
-      <h1>Welcome, {userName.split("@")[0]}!</h1>
+      <h1>Welcome, {userName.split('@')[0]}!</h1>
       {fileName && (
         <div>
           <p>File Information:</p>
@@ -18,3 +21,5 @@ const EmailTemplate = ({ emailToSend, userName, fileName, fileSize, fileType, sh
     </div>
   );
 };
+
+export default EmailTemplate;

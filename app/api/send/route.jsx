@@ -1,4 +1,4 @@
-// api/send.js (or similar)
+// api/send.js
 
 import { EmailTemplate } from '../../_component/email-template.jsx';
 import { Resend } from 'resend';
@@ -23,12 +23,14 @@ export async function POST(req) {
       }),
     };
 
+    console.log('Email Data:', emailData);
+
     const responseData = await resend.emails.send(emailData);
     console.log('Resend API Response:', responseData);
 
     return Response.json(responseData);
   } catch (error) {
     console.error('Error:', error);
-    return Response.json({ error });
+    return Response.json({ error: error.message || 'Unknown error' });
   }
 }

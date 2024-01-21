@@ -70,6 +70,8 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
       shortLink: shortLink,
     };
 
+    console.log('Email Data:', data);
+
     Globalapi.SendEmail(data)
       .then((resp) => {
         console.log('Email API Response:', resp);
