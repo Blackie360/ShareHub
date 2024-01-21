@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Loader2 } from 'lucide-react';
 
-const FileInform = ({ file }) => {
+const FileInform = ({ file, pdfPreviewUrl }) => {
   const bytesToMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2);
+  const [filePreview, setFilePreview] = useState(null);
+
+  useEffect(() => {
+    if (pdfPreviewUrl) {
+      console.log('PDF Preview URL:', pdfPreviewUrl);
+      setFilePreview(pdfPreviewUrl);
+    } else if (file?.fileUrl) {
+      console.log('Image/File URL:', file.fileUrl);
+      setFilePreview(file.fileUrl);
+    }
+  }, [pdfPreviewUrl, file]);
+  
 
   if (!file) {
     return (
@@ -13,22 +25,27 @@ const FileInform = ({ file }) => {
     );
   }
 
-  const { fileUrl, fileName, fileSize } = file;
+  const { fileName, fileSize, fileType } = file;
 
   return (
     <div>
       <h2>File Information</h2>
-      <div className="relative w-full h-64 mb-4">
-        <Image
-          src={fileUrl}
-          alt={`Uploaded File - ${fileName}`}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-md"
-        />
-      </div>
+      {filePreview ? (
+        <div className="relative w-full h-64 mb-4">
+          <Image
+            src={filePreview}
+            alt={`File Preview - ${fileName}`}
+            layout="fill"
+            objectFit="cover"
+            className="rounded-md"
+          />
+        </div>
+      ) : (
+        <div>No preview available for this file type</div>
+      )}
       <p>File Name: {fileName}</p>
-      <p>File Size: {bytesToMB(file.fileSize)} MB</p>
+      <p>File Size: {bytesToMB(fileSize)} MB</p>
+      <p>File Type: {fileType}</p>
     </div>
   );
 };
