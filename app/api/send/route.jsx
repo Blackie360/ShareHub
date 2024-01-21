@@ -11,14 +11,14 @@ export async function POST(req) {
     console.log('Request Data:', requestData);
 
     // Ensure userName is defined before splitting
-    const userName = requestData.userName || 'Recipient'; // Use 'Recipient' if userName is not provided
+    const userName = requestData.userName || 'you'; 
 
     const emailData = {
       from: 'shareit@resend.dev',
       to: [requestData.emailToSend],
       subject: 'File Shared with You',
       react: EmailTemplate({
-        userName, // Pass userName to EmailTemplate
+        userName,
         fileName: requestData.fileName,
         fileSize: requestData.fileSize,
         fileType: requestData.fileType,
