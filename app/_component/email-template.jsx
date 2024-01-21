@@ -1,4 +1,3 @@
-// _component/email-template.jsx
 import * as React from 'react';
 
 const EmailTemplate = ({ emailToSend, userName, fileName, fileSize, fileType, shortLink }) => {
@@ -19,5 +18,3 @@ const EmailTemplate = ({ emailToSend, userName, fileName, fileSize, fileType, sh
     </div>
   );
 };
-
-export default EmailTemplate;
