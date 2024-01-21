@@ -1,41 +1,34 @@
+// api/send.js (or similar)
+
 import { EmailTemplate } from '../../_component/email-template.jsx';
 import { Resend } from 'resend';
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req) {
   try {
     const requestData = await req.json();
+    console.log('Request Data:', requestData);
 
-    // Extract necessary data from the request
-    const { recipientEmail, file } = requestData;
-
-    // Customize the email content based on file sharing
     const emailData = {
-      from: 'FileShare App <noreply@fileshareapp.dev>',
-      to: [recipientEmail],
-      subject: `File Shared: ${file.fileName}`,
+      from: 'shareit@resend.dev',
+      to: [requestData.emailToSend],
+      subject: 'File Shared with You',
       react: EmailTemplate({
-        recipientName: 'John', // You might want to dynamically get the recipient's name from your user database
-        fileName: file.fileName,
-        fileSize: file.fileSize,
-        fileType: file.fileType,
-        shortLink: 'https://fileshareapp.dev/shortlink', // Replace with your actual short link
+        firstName: requestData.userName.split('@')[0],
+        fileName: requestData.fileName,
+        fileSize: requestData.fileSize,
+        fileType: requestData.fileType,
+        shortLink: requestData.shortLink,
       }),
     };
 
-    // Send the email
-    const response = await resend.emails.send(emailData);
+    const responseData = await resend.emails.send(emailData);
+    console.log('Resend API Response:', responseData);
 
-    // Return a successful response with the email sending details
-    return new Response(JSON.stringify({ success: true, data: response }), {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return Response.json(responseData);
   } catch (error) {
-    // Handle errors and return an error response
-    console.error('Error sending email:', error);
-    return new Response(JSON.stringify({ success: false, error: error.message }), {
-      headers: { 'Content-Type': 'application/json' },
-      status: 500, // Internal Server Error
-    });
+    console.error('Error:', error);
+    return Response.json({ error });
   }
 }

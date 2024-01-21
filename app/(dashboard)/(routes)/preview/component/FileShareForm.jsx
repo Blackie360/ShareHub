@@ -1,7 +1,9 @@
+// FileShareForm.jsx
+
 import React, { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
 import Globalapi from 'app/Actions/Globalapi';
 import { useUser } from "@clerk/nextjs";
+import { Eye, EyeOff } from 'lucide-react';
 
 const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   const [email, setEmail] = useState('');
@@ -55,22 +57,27 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   };
 
   const handlePasswordSave = () => {
-    
     onPasswordSave(password);
   };
-  const sendEmail=()=>{
+
+  const sendEmail = () => {
     const data = {
-      emailToSend: email, // This now uses the recipient's email from the form
+      emailToSend: email,
       userName: user?.fullName,
       fileName: file?.fileName,
       fileSize: file?.fileSize,
       fileType: file?.fileType,
       shortLink: shortLink,
     };
-    Globalapi.SendEmail(data).then(resp=>{
-        console.log(resp);
-    })
-  }
+
+    Globalapi.SendEmail(data)
+      .then((resp) => {
+        console.log('Email API Response:', resp);
+      })
+      .catch((error) => {
+        console.error('Error sending email:', error);
+      });
+  };
 
   return (
     <div className="bg-gray-100 p-4 rounded-md">
@@ -141,7 +148,6 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
           handleShare();
           sendEmail();
         }}
-
       >
         Share File
       </button>
