@@ -61,26 +61,44 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   };
 
   const sendEmail = () => {
+    // Ensure email is defined before making the API call
+    if (!email) {
+      console.error('Email is undefined.');
+      return;
+    }
+  
+    // Provide a default value for userName if user?.fullName is undefined
+    const userName = user?.fullName ? user.fullName.split('@')[0] : 'Recipient';
+  
+    console.log('Sending email with data:', {
+      emailToSend: email,
+      userName: userName,
+      fileName: file?.fileName,
+      fileSize: file?.fileSize,
+      fileType: file?.fileType,
+      shortLink: shortLink,
+    });
+  
     const data = {
       emailToSend: email,
-      userName: user?.fullName,
+      userName: userName,
       fileName: file?.fileName,
       fileSize: file?.fileSize,
       fileType: file?.fileType,
       shortLink: shortLink,
     };
-
-    console.log('Email Data:', data);
-
+  
     Globalapi.SendEmail(data)
-      .then((resp) => {
-        console.log('Email API Response:', resp);
+      .then((response) => {
+        console.log('Email API Response:', response);
       })
       .catch((error) => {
-        console.error('Error sending email:', error);
+        console.error('Email API Error:', error);
       });
   };
-
+  
+  
+  
   return (
     <div className="bg-gray-100 p-4 rounded-md">
       <h2 className="text-xl font-bold mb-4">Share File</h2>

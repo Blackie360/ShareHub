@@ -14,7 +14,7 @@ export async function POST(req) {
     const emailToSend = requestData.emailToSend;
     const firstName = emailToSend ? emailToSend.split('@')[0] : '';
     console.log('EmailToSend:', emailToSend);
-    console.log('FirstName:', firstName);
+        console.log('FirstName:', firstName);
 
     const emailData = {
       from: 'shareit@resend.dev',
