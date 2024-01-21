@@ -21,10 +21,12 @@ export default async function handler(req, res) {
     // Download the PDF file
     const downloadCommand = `curl -o "${tempPdfPath}" "${url}"`;
     await execAsync(downloadCommand);
+    console.log('PDF downloaded successfully:', tempPdfPath);
 
     // Convert the first page of the PDF to an image
     const convertCommand = `pdftoppm -png -f 1 -l 1 "${tempPdfPath}" > "${tempImagePath}"`;
     await execAsync(convertCommand);
+    console.log('PDF converted to image successfully:', tempImagePath);
 
     // Read the generated image file
     const imageBuffer = fs.readFileSync(tempImagePath);
@@ -38,5 +40,9 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('Error in pdf-preview API:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+  } finally {
+    // Clean up: Delete temporary files
+    fs.unlinkSync(tempPdfPath);
+    fs.unlinkSync(tempImagePath);
   }
 }
