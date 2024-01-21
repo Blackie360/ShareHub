@@ -1,4 +1,3 @@
-// api/send.js
 
 import EmailTemplate from '../../_component/email-template.jsx';
 import { Resend } from 'resend';
