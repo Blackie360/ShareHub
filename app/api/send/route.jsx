@@ -1,6 +1,6 @@
 // api/send.js
 
-import { EmailTemplate } from '../../_component/email-template.jsx';
+import EmailTemplate from '../../_component/email-template.jsx';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -10,12 +10,18 @@ export async function POST(req) {
     const requestData = await req.json();
     console.log('Request Data:', requestData);
 
+    // Check if emailToSend is defined before splitting
+    const emailToSend = requestData.emailToSend;
+    const firstName = emailToSend ? emailToSend.split('@')[0] : '';
+    console.log('EmailToSend:', emailToSend);
+    console.log('FirstName:', firstName);
+
     const emailData = {
       from: 'shareit@resend.dev',
-      to: [requestData.emailToSend],
+      to: [emailToSend],
       subject: 'File Shared with You',
       react: EmailTemplate({
-        firstName: requestData.userName.split('@')[0],
+        firstName: firstName,
         fileName: requestData.fileName,
         fileSize: requestData.fileSize,
         fileType: requestData.fileType,
