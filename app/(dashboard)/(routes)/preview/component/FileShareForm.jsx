@@ -59,14 +59,14 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
     onPasswordSave(password);
   };
   const sendEmail=()=>{
-    const data={
-        emailToSend:email,
-        userName:user?.fullName,
-        fileName:file?.fileName,
-        fileSize:file?.fileSize,
-        fileType:file?.fileType,
-        shortLink:shortLink,
-    }
+    const data = {
+      emailToSend: email, // This now uses the recipient's email from the form
+      userName: user?.fullName,
+      fileName: file?.fileName,
+      fileSize: file?.fileSize,
+      fileType: file?.fileType,
+      shortLink: shortLink,
+    };
     Globalapi.SendEmail(data).then(resp=>{
         console.log(resp);
     })
