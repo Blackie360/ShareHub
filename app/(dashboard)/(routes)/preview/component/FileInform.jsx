@@ -41,7 +41,7 @@ const FileInform = ({ file, pdfPreviewUrl }) => {
           />
         </div>
       ) : (
-        <div>No preview available for this file type</div>
+        <div>No preview available </div>
       )}
       <p>File Name: {fileName}</p>
       <p>File Size: {bytesToMB(fileSize)} MB</p>
