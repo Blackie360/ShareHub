@@ -91,11 +91,19 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
     Globalapi.SendEmail(data)
       .then((response) => {
         console.log('Email API Response:', response);
+  
+        // Ensure response.data is defined before accessing properties
+        if (response.data) {
+          console.log('Response Data:', response.data);
+        } else {
+          console.error('Response Data is undefined.');
+        }
       })
       .catch((error) => {
         console.error('Email API Error:', error);
       });
   };
+  
   
   
   

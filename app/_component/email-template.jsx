@@ -6,9 +6,11 @@ import { useUser } from "@clerk/nextjs";
 const EmailTemplate = ({ userName, fileName, fileSize, fileType, shortLink }) => {
   const bytesToMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2);
 
+  const formattedUserName = userName ? userName.split('@')[0] : ''; // Check if userName is defined
+
   return (
     <div>
-      <h1>Welcome, {userName.split('@')[0]}!</h1>
+      <h1>Welcome, {formattedUserName || 'User'}!</h1>
       {fileName && (
         <div>
           <p>File Information:</p>

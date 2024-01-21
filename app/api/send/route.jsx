@@ -10,18 +10,15 @@ export async function POST(req) {
     const requestData = await req.json();
     console.log('Request Data:', requestData);
 
-    // Check if emailToSend is defined before splitting
-    const emailToSend = requestData.emailToSend;
-    const firstName = emailToSend ? emailToSend.split('@')[0] : '';
-    console.log('EmailToSend:', emailToSend);
-        console.log('FirstName:', firstName);
+    // Ensure userName is defined before splitting
+    const userName = requestData.userName || 'Recipient'; // Use 'Recipient' if userName is not provided
 
     const emailData = {
       from: 'shareit@resend.dev',
-      to: [emailToSend],
+      to: [requestData.emailToSend],
       subject: 'File Shared with You',
       react: EmailTemplate({
-        firstName: firstName,
+        userName, // Pass userName to EmailTemplate
         fileName: requestData.fileName,
         fileSize: requestData.fileSize,
         fileType: requestData.fileType,
@@ -33,6 +30,13 @@ export async function POST(req) {
 
     const responseData = await resend.emails.send(emailData);
     console.log('Resend API Response:', responseData);
+
+    // Ensure response.data is defined before accessing properties
+    if (responseData.data) {
+      console.log('Response Data:', responseData.data);
+    } else {
+      console.error('Response Data is undefined.');
+    }
 
     return Response.json(responseData);
   } catch (error) {
