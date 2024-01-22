@@ -67,8 +67,8 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
       return;
     }
   
-    // Provide a default value for userName if user?.fullName is undefined
-    const userName = user?.fullName ? user.fullName.split('@')[0] : 'Recipient';
+    // Provide a default value for userName if user?.email is undefined
+    const userName = user?.email ? user.email.split('@')[0] : 'Recipient';
   
     console.log('Sending email with data:', {
       emailToSend: email,
@@ -76,7 +76,7 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
       fileName: file?.fileName,
       fileSize: file?.fileSize,
       fileType: file?.fileType,
-      shortLink: shortLink,
+      shortLink: shortLink, 
     });
   
     const data = {
@@ -85,7 +85,7 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
       fileName: file?.fileName,
       fileSize: file?.fileSize,
       fileType: file?.fileType,
-      shortLink: shortLink,
+      shortLink: shortLink, 
     };
   
     Globalapi.SendEmail(data)
