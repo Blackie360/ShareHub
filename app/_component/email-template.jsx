@@ -1,15 +1,12 @@
+// EmailTemplate.jsx
 
 import React from 'react';
 
 const EmailTemplate = ({ fileName, fileSize, fileType, shortLink }) => {
   const bytesToMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2);
 
-  
-
   return (
     <section className="max-w-2xl px-6 py-8 mx-auto bg-white dark:bg-gray-900 shadow-md rounded-md">
-     
-
       <main className="mt-8">
         <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Hi there,</h2>
 
