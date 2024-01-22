@@ -1,4 +1,4 @@
-
+// FileShareForm.jsx
 
 import React, { useState } from 'react';
 import Globalapi from 'app/Actions/Globalapi';
@@ -32,9 +32,7 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
           shortLink: generatedShortLink,
         };
 
-        await onShare(shareData); // Wait for onShare to complete before moving on
-
-        sendEmail(); // Call sendEmail after onShare is completed
+        onShare(shareData);
       } else {
         console.error('File URL is missing.');
       }
@@ -68,10 +66,10 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
       console.error('Email is undefined.');
       return;
     }
-
+  
     // Provide a default value for userName if user?.fullName is undefined
     const userName = user?.fullName ? user.fullName.split('@')[0] : 'Recipient';
-
+  
     console.log('Sending email with data:', {
       emailToSend: email,
       userName: userName,
@@ -80,7 +78,7 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
       fileType: file?.fileType,
       shortLink: shortLink,
     });
-
+  
     const data = {
       emailToSend: email,
       userName: userName,
@@ -89,11 +87,11 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
       fileType: file?.fileType,
       shortLink: shortLink,
     };
-
+  
     Globalapi.SendEmail(data)
       .then((response) => {
         console.log('Email API Response:', response);
-
+  
         // Ensure response.data is defined before accessing properties
         if (response.data) {
           console.log('Response Data:', response.data);
@@ -105,7 +103,10 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
         console.error('Email API Error:', error);
       });
   };
-
+  
+  
+  
+  
   return (
     <div className="bg-gray-100 p-4 rounded-md">
       <h2 className="text-xl font-bold mb-4">Share File</h2>
@@ -171,7 +172,10 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
 
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        onClick={handleShare}
+        onClick={() => {
+          handleShare();
+          sendEmail();
+        }}
       >
         Share File
       </button>
