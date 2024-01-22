@@ -1,5 +1,5 @@
 
-import React,  from 'react';
+import React from 'react';
 
 const EmailTemplate = ({ fileName, fileSize, fileType, shortLink }) => {
   const bytesToMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2);
