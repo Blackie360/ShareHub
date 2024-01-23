@@ -3,8 +3,9 @@ import { UserButton } from "@clerk/nextjs";
 const files = () => {
   return (
     <div>
-      file
+     
       <UserButton afterSignOutUrl="/"/>
+      file
     </div>
   )
 }
