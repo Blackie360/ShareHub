@@ -1,7 +1,15 @@
-import React from 'react';
+// components/EmailTemplate.js
 
-const EmailTemplate = ({ fileName, fileSize, fileType, shortLink, userName }) => {
-  const bytesToMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2);
+import React from 'react';
+import { useRouter } from 'next/navigation';
+
+const EmailTemplate = ({ fileId, fileName, fileSize, fileType, userName }) => {
+  const router = useRouter();
+
+  const handleViewFile = () => {
+    // Navigate to the dynamic route with the fileId
+    router.push(`/[fileId]`, `/${fileId}`);
+  };
 
   return (
     <section className="max-w-2xl px-6 py-8 mx-auto bg-white dark:bg-gray-900 shadow-md rounded-md">
@@ -15,14 +23,13 @@ const EmailTemplate = ({ fileName, fileSize, fileType, shortLink, userName }) =>
               <div className="flex items-center mb-2">
                 <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                    d="M21 19.02V5c0-1.104-.896-2-2-2H5c-1.104 0-2 .896-2 2v14.02M5 4v16.02c0 1.104.896 2 2 2h14c1.104 0 2-.896 2-2V4M7 8h2m4 0h2m-6 4h12m-7 4l7-7" />
+                  {/* ... (your SVG path) */}
                 </svg>
                 <span className="font-semibold">{fileName}</span>
               </div>
-              <p className="mt-2">File Size: {bytesToMB(fileSize)} MB</p>
+              <p className="mt-2">File Size: {fileSize} MB</p>
               <p>File Type: {fileType}</p>
-              <p>Short Link: {shortLink}</p>
+              <p>Short Link: {fileId}</p>
             </>
           ) : (
             <span>You have a new message!</span>
@@ -31,7 +38,7 @@ const EmailTemplate = ({ fileName, fileSize, fileType, shortLink, userName }) =>
 
         {fileName && (
           <button
-            onClick={() => window.open(shortLink, '_blank')}
+            onClick={handleViewFile}
             className="px-6 py-2 mt-4 text-sm font-medium tracking-wider text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
           >
             View File
