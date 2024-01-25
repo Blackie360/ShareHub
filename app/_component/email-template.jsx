@@ -7,7 +7,7 @@ const EmailTemplate = ({ fileId, fileName, fileSize, fileType, userName }) => {
   const router = useRouter();
 
   const handleViewFile = () => {
-    // Navigate to the dynamic route with the fileId
+  
     router.push(`/[fileId]`, `/${fileId}`);
   };
 
