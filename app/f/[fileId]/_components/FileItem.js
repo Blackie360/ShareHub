@@ -41,19 +41,27 @@ const FileItem = ({ file }) => {
   };
 
   return (
-    <div className="bg-white  shadow-md p-8 rounded-md mb-8 w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+    <div className={`bg-white  shadow-md p-8 rounded-md mb-8 w-full md:w-1/2 lg:w-1/3 xl:w-1/4
+      ${isPasswordCorrect ? 'border-green-500' : 'border-red-500'}`}>
       {/* File Share Information */}
       <div className="mb-6">
         {userName && (
           <>
           <div className="text-lg font-semibold">
-            <p className="text-lg font-semibold"><span className="inline-block text-purple-700  rounded px-2 py-1 mr-2">
+            <p className="text-lg font-semibold">
+              <span className={`inline-block rounded px-2 py-1 mr-2
+                ${isPasswordCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
                 {userName}
-              </span> shared a file with you</p>
+              </span> shared a file with you
+            </p>
             <p className="text-gray-600">{fileType} - {fileSize} Bytes</p>
-            <p className="text-gray-500">From: <span className="inline-block text-purple-700  rounded px-2 py-1 mr-2">
+            <p className="text-gray-500">
+              From: 
+              <span className={`inline-block rounded px-2 py-1 mr-2
+                ${isPasswordCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
                 {userName}
-              </span></p>
+              </span>
+            </p>
           </div>
           </>
         )}
@@ -71,7 +79,7 @@ const FileItem = ({ file }) => {
           placeholder="Enter password"
           value={password}
           onChange={handlePasswordChange}
-          className="border border-gray-300 p-2 w-full"
+          className={`border p-2 w-full ${isPasswordCorrect ? 'border-green-500' : 'border-red-500'}`}
         />
         {!isPasswordCorrect && (
           <p className="text-red-500 mt-2">Incorrect password. Please try again.</p>
@@ -82,11 +90,13 @@ const FileItem = ({ file }) => {
       <div className="flex items-center space-x-4">
         <button
           onClick={handleDownload}
-          className="flex items-center text-blue-500 hover:underline"
+          className={`flex items-center text-blue-500 hover:underline
+            ${isPasswordCorrect ? 'hover:bg-green-100' : 'hover:bg-red-100'}`}
         >
           <Download className='w-12 h-12'/> Download
         </button>
-        <button className="flex items-center text-blue-500 hover:underline">
+        <button className={`flex items-center text-blue-500 hover:underline
+          ${isPasswordCorrect ? 'hover:bg-green-100' : 'hover:bg-red-100'}`}>
           <Eye className="mr-1 w-12 h-12" /> View Online
         </button>
       </div>
