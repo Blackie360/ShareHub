@@ -1,5 +1,4 @@
 // FileShareForm.jsx
-
 import React, { useState } from 'react';
 import Globalapi from 'app/Actions/Globalapi';
 import { useUser } from "@clerk/nextjs";
@@ -11,6 +10,7 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
   const [shortLink, setShortLink] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [isPasswordEnabled, setIsPasswordEnabled] = useState(false); // Added state for password enable/disable
   const user = useUser();
 
   const handleShare = async () => {
@@ -28,7 +28,7 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
 
         const shareData = {
           email,
-          password,
+          password: isPasswordEnabled ? password : '', // Only include password if it is enabled
           shortLink: generatedShortLink,
         };
 
@@ -40,6 +40,7 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
       console.error('Error generating short link:', error.message);
     }
   };
+
   const generateShortLink = () => {
     const fileId = file?.id; // Assuming file has an 'id' property
     return `${process.env.NEXT_PUBLIC_BASE_URL}/f/${fileId}`;
@@ -57,6 +58,19 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
 
   const handlePasswordSave = () => {
     onPasswordSave(password);
+    setIsPasswordEnabled(true);
+
+    // Log the updated document properties
+    console.log('Updated Document Properties:', {
+      email,
+      userName: user?.username,
+      fileName: file?.fileName,
+      fileSize: file?.fileSize,
+      fileType: file?.fileType,
+      filepassword: password,
+      shortLink,
+      isPasswordEnabled: true, // Assuming the password is enabled after save
+    });
   };
 
   const sendEmail = () => {
@@ -102,9 +116,6 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
         console.error('Email API Error:', error);
       });
   };
-  
-  
-  
   
   return (
     <div className="bg-gray-100 p-4 rounded-md">
@@ -165,8 +176,21 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
           className="mt-2 text-sm text-blue-500 underline cursor-pointer rounded-md"
           onClick={handlePasswordSave}
         >
-          Save Password
+          enable password
         </button>
+      </div>
+
+      {/* Checkbox to enable/disable password protection */}
+      <div className="mb-4">
+        <label className="flex items-center">
+          <input
+            type="checkbox"
+            checked={isPasswordEnabled}
+            onChange={() => setIsPasswordEnabled(!isPasswordEnabled)}
+            className="form-checkbox h-5 w-5 text-blue-500"
+          />
+          <span className="ml-2 text-gray-600">Enable Password Protection</span>
+        </label>
       </div>
 
       <button
