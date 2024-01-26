@@ -4,7 +4,10 @@ import React, {useEffect} from "react"
 
 
 const FileView = ({params}) => {
-    console.log(params)
+   
+    useEffect(()=>{
+
+    },[])
   return (
     <div>FileView</div>
   )
