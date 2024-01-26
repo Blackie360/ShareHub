@@ -8,22 +8,38 @@ import animationData from 'public/file.json';
 const FileItem = ({ file }) => {
   const { user } = useUser();
 
+  // Check if user is available from Clerk or use default values
+  const userName = user?.username || file?.userName || "Anonymous User";
+  const fileType = file?.fileType || "Unknown Type";
+  const fileSize = file?.fileSize || "Unknown Size";
+
+  // Lottie animation options
+  const lottieOptions = {
+    loop: true,
+    autoplay: true,
+    animationData,
+  };
+
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-md mb-4">
+    <div className="bg-white  shadow-md p-8 rounded-md mb-8 w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
       {/* File Share Information */}
-      <div className="mb-4">
-        {user && (
+      <div className="mb-6">
+        {userName && (
           <>
-            <p className="text-lg font-semibold">{user.username} shared a file with you</p>
-            <p className="text-gray-600">{file?.fileType} - {file?.fileSize} MB</p>
-            <p className="text-gray-500">From: {user.username} </p>
+          <div className="text-lg font-semibold">
+            <p className="text-lg font-semibold"><span className="inline-block text-purple-700  rounded px-2 py-1 mr-2">
+                {userName}
+              </span> shared a file with you</p>
+            <p className="text-gray-600">{fileType} - {fileSize} Bytes</p>
+            <p className="text-gray-500">From: {userName}</p>
+            </div>
           </>
         )}
       </div>
 
       {/* Lottie Animation */}
-      <div className="mb-4">
-        <Lottie options={{ loop: true, autoplay: true, animationData }} height={64} width={64} />
+      <div className="mb-6">
+        <Lottie options={lottieOptions} height={128} width={128} />
       </div>
 
       {/* Download and View Online Actions */}
