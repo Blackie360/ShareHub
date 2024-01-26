@@ -15,15 +15,13 @@ export async function POST(req) {
     const emailData = {
       from: 'shareit@resend.dev',
       to: [requestData.emailToSend],
-      subject: userName + 'File Shared with You',
+      subject: 'File Shared with You',
       react: EmailTemplate({
-        userName: userName,  
-        emailToSend: requestData.emailToSend,  
+        userName,
         fileName: requestData.fileName,
         fileSize: requestData.fileSize,
         fileType: requestData.fileType,
         shortLink: requestData.shortLink,
-        
       }),
     };
 
