@@ -40,10 +40,9 @@ const FileShareForm = ({ file, onShare, onPasswordSave }) => {
       console.error('Error generating short link:', error.message);
     }
   };
-
   const generateShortLink = () => {
-    const randomString = () => Math.random().toString(36).substring(7);
-    return `${process.env.NEXT_PUBLIC_BASE_URL}/${randomString()}`;
+    const fileId = file?.id; // Assuming file has an 'id' property
+    return `${process.env.NEXT_PUBLIC_BASE_URL}/f/${fileId}`;
   };
 
   const copyToClipboard = (text) => {
