@@ -9,7 +9,7 @@ const Nav = () => {
           <div className="flex h-16 items-center justify-between">
           <div className="md:flex md:items-center md:gap-12">
    <Image
-      src="/logo.svg"
+      src="/folder.png"
       width={50}
     height={40} 
     alt="logo"

@@ -5,6 +5,9 @@ import Lottie from 'react-lottie';
 import animationData from 'public/file.json';
 
 const FileItem = ({ file }) => {
+  if (!file) {
+    return null;
+  }
   const { user } = useUser();
   const [password, setPassword] = useState('');
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(true);

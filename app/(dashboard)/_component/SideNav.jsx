@@ -35,10 +35,10 @@ const SideNav = () => {
 
   return (
     <div className='bg-white text-black shadow-sm border-r h-full'>
-      <div className=' p-5 border-b'>
-        <Image src='/logo.svg' width={100} height={100} alt='logo' />
+      <div className='p-5 border-b'>
+        <Image src='/folder.png' width={100} height={100} alt='logo' />
       </div>
-      <div className='flex flex-col float-left w-full'>
+      <div className='flex flex-col w-full lg:w-56'>
         {menuList.map((item, index) => (
           <Link href={item.path} key={item.id}>
             <div
@@ -46,7 +46,7 @@ const SideNav = () => {
                 ${activeIndex === index ? 'bg-blue-200 text-blue-900' : 'hover:bg-gray-100'}`}
               onClick={() => handleMenuItemClick(index)}
             >
-              <div className='flex gap-2 p-4 px-0 text-xl text-gray-500'>
+              <div className='flex lg:gap-2 p-4 px-0 text-xl text-gray-500'>
                 <item.icon />
                 <span>{item.name}</span>
               </div>
