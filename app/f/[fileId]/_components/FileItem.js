@@ -29,9 +29,21 @@ const FileItem = ({ file }) => {
     // Check if password protection is enabled and the entered password matches the file's password
     if (!file.password || (password === file.password)) {
       // Password is correct or no password is set, perform download action
+
+      // Construct the download link
+      const downloadLink = document.createElement('a');
+      downloadLink.href = file.fileUrl;
+      downloadLink.download = file.fileName;
+
+      // Append the link to the document and trigger the click event
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+
+      // Remove the link from the document
+      document.body.removeChild(downloadLink);
+
       console.log('Password is correct. Downloading...');
       setIsPasswordCorrect(true);
-      // Add your download logic here
     } else {
       // Password is incorrect
       console.log('Password is incorrect. Download failed.');
@@ -60,22 +72,22 @@ const FileItem = ({ file }) => {
       <div className="mb-6">
         {userName && (
           <>
-          <div className="text-lg font-semibold">
-            <p className="text-lg font-semibold">
-              <span className={`inline-block rounded px-2 py-1 mr-2
-                ${isPasswordCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
-                {userName}
-              </span> shared a file with you
-            </p>
-            <p className="text-gray-600">{fileType} - {fileSize} Bytes</p>
-            <p className="text-gray-500">
-              From: 
-              <span className={`inline-block rounded px-2 py-1 mr-2
-                ${isPasswordCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
-                {userName}
-              </span>
-            </p>
-          </div>
+            <div className="text-lg font-semibold">
+              <p className="text-lg font-semibold">
+                <span className={`inline-block rounded px-2 py-1 mr-2
+                  ${isPasswordCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
+                  {userName}
+                </span> shared a file with you
+              </p>
+              <p className="text-gray-600">{fileType} - {fileSize} Bytes</p>
+              <p className="text-gray-500">
+                From:
+                <span className={`inline-block rounded px-2 py-1 mr-2
+                  ${isPasswordCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
+                  {userName}
+                </span>
+              </p>
+            </div>
           </>
         )}
       </div>
@@ -87,21 +99,20 @@ const FileItem = ({ file }) => {
 
       {/* Password Input (conditionally rendered) */}
       {file && file.password && file.password.length > 3 && (
-  <div className="mb-4">
-    <input
-      type="password"
-      placeholder="Enter password"
-      value={password}
-      onChange={handlePasswordChange}
-      className={`border p-2 w-full ${isPasswordCorrect ? 'border-green-500' : 'border-red-500'}`}
-    />
-    {!isPasswordCorrect && (
-      <p className="text-red-500 mt-2">Incorrect password. Please try again.</p>
-    )}
-  </div>
-)}
+        <div className="mb-4">
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={handlePasswordChange}
+            className={`border p-2 w-full ${isPasswordCorrect ? 'border-green-500' : 'border-red-500'}`}
+          />
+          {!isPasswordCorrect && (
+            <p className="text-red-500 mt-2">Incorrect password. Please try again.</p>
+          )}
+        </div>
+      )}
 
-     
       {/* Download and View Online Actions */}
       <div className="flex items-center space-x-4">
         <button
@@ -121,6 +132,6 @@ const FileItem = ({ file }) => {
       </div>
     </div>
   );
-}
+};
 
 export default FileItem;
