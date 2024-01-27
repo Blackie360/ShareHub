@@ -1,34 +1,38 @@
-"use client"
-import React, { useState } from 'react'
+"use client";
+import React, { useState, useEffect } from 'react';
 import { app } from '@/firebaseconfig';
-import { Firestore } from 'firebase/firestore';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+
 const Fetch = () => {
-    const [allDocs, setAllDocs]=useState([]);
-    const [singleDoc, setSingleDoc]=useState({});
-t
-    const db=Firestore();
+    const [allDocs, setAllDocs] = useState([]);
+    const [singleDoc, setSingleDoc] = useState({});
+    const db = getFirestore(app);
 
-    //function to fetch all docs
-    function fetchAll(e){
-      e.preventDefault();
-      db.collection("uploadedFile").get().then((snapshot)=>{
-         if (snapshot.docs.length>0){
-          snapshot.docs.forEach((doc)=>{
-            setAllDocs((prev)=>{
-              return [...prev, doc.data()];
+    // Function to fetch all docs
+    const fetchAll = async (e) => {
+        e.preventDefault();
+        try {
+            const querySnapshot = await getDocs(collection(db, 'uploadedFile'));
+            const documents = [];
+            querySnapshot.forEach((doc) => {
+                documents.push(doc.data());
             });
-
-          }); 
-         }
-      });
-      console.log(allDocs);
-
+            setAllDocs(documents);
+        } catch (error) {
+            console.error("Error fetching documents: ", error);
+        }
     }
-  return (
-    <div>
-      file
-    </div>
-  )
+
+    // Use useEffect to log changes in the allDocs state
+    useEffect(() => {
+        console.log(allDocs);
+    }, [allDocs]);
+
+    return (
+        <div>
+            <button onClick={fetchAll}>Fetch</button>
+        </div>
+    )
 }
 
-export default Fetch
+export default Fetch;
