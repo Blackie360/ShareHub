@@ -86,21 +86,22 @@ const FileItem = ({ file }) => {
       </div>
 
       {/* Password Input (conditionally rendered) */}
-      {file.password && (
-        <div className="mb-4">
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={handlePasswordChange}
-            className={`border p-2 w-full ${isPasswordCorrect ? 'border-green-500' : 'border-red-500'}`}
-          />
-          {!isPasswordCorrect && (
-            <p className="text-red-500 mt-2">Incorrect password. Please try again.</p>
-          )}
-        </div>
-      )}
+      {file && file.password && file.password.length > 3 && (
+  <div className="mb-4">
+    <input
+      type="password"
+      placeholder="Enter password"
+      value={password}
+      onChange={handlePasswordChange}
+      className={`border p-2 w-full ${isPasswordCorrect ? 'border-green-500' : 'border-red-500'}`}
+    />
+    {!isPasswordCorrect && (
+      <p className="text-red-500 mt-2">Incorrect password. Please try again.</p>
+    )}
+  </div>
+)}
 
+     
       {/* Download and View Online Actions */}
       <div className="flex items-center space-x-4">
         <button
