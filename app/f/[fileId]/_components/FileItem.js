@@ -1,4 +1,3 @@
-// FileItem.jsx
 import React, { useState } from 'react';
 import { useUser } from "@clerk/nextjs";
 import { Eye, Download } from 'lucide-react';
@@ -27,9 +26,9 @@ const FileItem = ({ file }) => {
   };
 
   const handleDownload = () => {
-    // Check if the entered password matches the file's password
-    if (password === file?.password) {
-      // Password is correct, perform download action
+    // Check if password protection is enabled and the entered password matches the file's password
+    if (!file.password || (password === file.password)) {
+      // Password is correct or no password is set, perform download action
       console.log('Password is correct. Downloading...');
       setIsPasswordCorrect(true);
       // Add your download logic here
@@ -40,8 +39,22 @@ const FileItem = ({ file }) => {
     }
   };
 
+  const handleViewOnline = () => {
+    // Check if password protection is enabled and the entered password matches the file's password
+    if (!file.password || (password === file.password)) {
+      // Password is correct or no password is set, redirect to the file URL for viewing online
+      console.log('Password is correct. Redirecting to view online...');
+      setIsPasswordCorrect(true);
+      window.location.href = file.fileUrl;
+    } else {
+      // Password is incorrect
+      console.log('Password is incorrect. View online failed.');
+      setIsPasswordCorrect(false);
+    }
+  };
+
   return (
-    <div className={`bg-white  shadow-md p-8 rounded-md mb-8 w-full md:w-1/2 lg:w-1/3 xl:w-1/4
+    <div className={`bg-white shadow-md p-8 rounded-md mb-8 w-full md:w-1/2 lg:w-1/3 xl:w-1/4
       ${isPasswordCorrect ? 'border-green-500' : 'border-red-500'}`}>
       {/* File Share Information */}
       <div className="mb-6">
@@ -72,19 +85,21 @@ const FileItem = ({ file }) => {
         <Lottie options={lottieOptions} height={300} width={300} />
       </div>
 
-      {/* Password Input */}
-      <div className="mb-4">
-        <input
-          type="password"
-          placeholder="Enter password"
-          value={password}
-          onChange={handlePasswordChange}
-          className={`border p-2 w-full ${isPasswordCorrect ? 'border-green-500' : 'border-red-500'}`}
-        />
-        {!isPasswordCorrect && (
-          <p className="text-red-500 mt-2">Incorrect password. Please try again.</p>
-        )}
-      </div>
+      {/* Password Input (conditionally rendered) */}
+      {file.password && (
+        <div className="mb-4">
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={handlePasswordChange}
+            className={`border p-2 w-full ${isPasswordCorrect ? 'border-green-500' : 'border-red-500'}`}
+          />
+          {!isPasswordCorrect && (
+            <p className="text-red-500 mt-2">Incorrect password. Please try again.</p>
+          )}
+        </div>
+      )}
 
       {/* Download and View Online Actions */}
       <div className="flex items-center space-x-4">
@@ -95,8 +110,11 @@ const FileItem = ({ file }) => {
         >
           <Download className='w-12 h-12'/> Download
         </button>
-        <button className={`flex items-center text-blue-500 hover:underline
-          ${isPasswordCorrect ? 'hover:bg-green-100' : 'hover:bg-red-100'}`}>
+        <button
+          onClick={handleViewOnline}
+          className={`flex items-center text-blue-500 hover:underline
+            ${isPasswordCorrect ? 'hover:bg-green-100' : 'hover:bg-red-100'}`}
+        >
           <Eye className="mr-1 w-12 h-12" /> View Online
         </button>
       </div>
