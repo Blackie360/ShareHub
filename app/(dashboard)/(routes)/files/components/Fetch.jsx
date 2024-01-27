@@ -1,5 +1,6 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { app } from '@/firebaseconfig';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
@@ -13,7 +14,7 @@ const Fetch = () => {
             const querySnapshot = await getDocs(collection(db, 'uploadedFile'));
             const documents = [];
             querySnapshot.forEach((doc) => {
-                documents.push(doc.data());
+                documents.push({ id: doc.id, ...doc.data() });
             });
             setAllDocs(documents);
             console.log(documents);
@@ -33,14 +34,20 @@ const Fetch = () => {
 
             {allDocs.length > 0 ? (
                 <div className="grid grid-cols-2 gap-4">
-                    {allDocs.map((doc, index) => (
-                        <div key={index} className="bg-gray-200 p-4 rounded-md">
+                    {allDocs.map((doc) => (
+                        <div key={doc.id} className="bg-gray-200 p-4 rounded-md">
                             {/* Adjust the structure based on your document data */}
                             {doc.userName && <p>User Name: {doc.userName}</p>}
                             {doc.userEmail && <p>User Email: {doc.userEmail}</p>}
                             {doc.fileName && <p>File Name: {doc.fileName}</p>}
                             {doc.fileType && <p>File Type: {doc.fileType}</p>}
-                            {/* Add more fields as needed */}
+                            
+                            {/* Add a "View" button to take the user to the preview page */}
+                            {doc.fileUrl && (
+                                <Link href={`/preview/${doc.id}`}>
+                                    <div className="bg-blue-500 text-white px-2 py-1 rounded-md mt-2 inline-block">View</div>
+                                </Link>
+                            )}
                         </div>
                     ))}
                 </div>
