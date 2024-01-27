@@ -8,7 +8,7 @@ const Fetch = () => {
     const [allDocs, setAllDocs] = useState([]);
     const db = getFirestore(app);
 
-    // Function to fetch all docs
+    
     const fetchAll = async () => {
         try {
             const querySnapshot = await getDocs(collection(db, 'uploadedFile'));
@@ -23,10 +23,10 @@ const Fetch = () => {
         }
     }
 
-    // Use useEffect to fetch data when the component mounts
+   
     useEffect(() => {
         fetchAll();
-    }, []); // Empty dependency array ensures the effect runs once when the component mounts
+    }, []); 
 
     return (
         <div className="container mx-auto p-4">
@@ -42,7 +42,7 @@ const Fetch = () => {
                             {doc.fileName && <p>File Name: {doc.fileName}</p>}
                             {doc.fileType && <p>File Type: {doc.fileType}</p>}
                             
-                            {/* Add a "View" button to take the user to the preview page */}
+                            
                             {doc.fileUrl && (
                                 <Link href={`/preview/${doc.id}`}>
                                     <div className="bg-blue-500 text-white px-2 py-1 rounded-md mt-2 inline-block">View</div>
