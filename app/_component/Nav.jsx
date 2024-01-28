@@ -35,11 +35,11 @@ const Nav = () => {
                   </li>
 
                   <li>
-                    <a className="text-gray-500 transition hover:text-gray-500/75" href="/"> About Us</a>
+                    <a className="text-gray-500 transition hover:text-gray-500/75" href="/about"> About Us</a>
                   </li>
 
                   <li>
-                    <a className="text-gray-500 transition hover:text-gray-500/75" href="/"> Contact Us </a>
+                    <a className="text-gray-500 transition hover:text-gray-500/75" href="/contact"> Contact Us </a>
                   </li>
                 </ul>
               </nav>
