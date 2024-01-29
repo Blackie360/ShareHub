@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { UserButton } from '@clerk/nextjs';
+
 import { Upload } from 'lucide-react';
 import { File } from 'lucide-react';
 import { Shield } from 'lucide-react';
@@ -35,9 +37,13 @@ const SideNav = () => {
 
   return (
     <div className='bg-white text-black shadow-sm border-r h-full'>
+     
       <div className='p-5 border-b'>
         <Image src='/folder.png' width={100} height={100} alt='logo' />
       </div>
+
+
+      
       <div className='flex flex-col w-full lg:w-56'>
         {menuList.map((item, index) => (
           <Link href={item.path} key={item.id}>

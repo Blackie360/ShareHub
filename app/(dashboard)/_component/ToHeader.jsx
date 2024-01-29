@@ -43,9 +43,10 @@ const ToHeader = () => {
   
 
  
-  <div className='md:hidden text-right items-end'>
-    <UserButton />
-  </div>
+  <div className="lg:flex lg:items-end lg:justify-end md:text-right items-end">
+  <UserButton className="lg:mt-4" />
+</div>
+
 
   
   <div className={`md:hidden ${isMobileMenuOpen ? 'flex' : 'hidden'} flex-col items-center mt-4`}>

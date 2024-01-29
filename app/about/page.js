@@ -1,16 +1,20 @@
-import Nav from 'app/_component/Nav';
 import React from 'react';
+import Nav from 'app/_component/Nav';
+import animationData from 'public/about.json';
 
 const AboutUs = () => {
+  
+  
+
   return (
-   
     <div className="container mx-auto mt-10 p-4 md:p-6 bg-gray-100 rounded-md">
       <div className='bg-white'>
         <Nav />
       </div>
       <h2 className="text-3xl font-bold mb-4">About Us</h2>
+      
       <p className="text-gray-700">
-        CodeFlix is a  software company dedicated to delivering high-quality solutions. The software you are currently using was built by our talented developer, Blackie.
+        CodeFlix is a software company dedicated to delivering high-quality solutions. The software you are currently using was built by our talented developer, Blackie.
       </p>
       <p className="text-gray-700 mt-4">
         Connect with us:
