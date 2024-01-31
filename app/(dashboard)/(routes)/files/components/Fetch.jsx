@@ -19,13 +19,13 @@ const Fetch = () => {
                     return;
                 }
 
-                const userEmail = user.primaryEmailAddress.emailAddress; // Change this based on Clerk user structure
-                const userId = user.id || ''; 
+                const userEmail = user.primaryEmailAddress.emailAddress;
+                const userId = user.id || '';
 
                 console.log("User ID:", userId);
                 console.log("User Email:", userEmail);
 
-                const querySnapshot = await getDocs(collection(db, 'uploadedFile'), where('file.userId', '==', userId));
+                const querySnapshot = await getDocs(collection(db, 'uploadedFile'), where('userEmail', '==', userEmail));
                 const documents = [];
                 querySnapshot.forEach((doc) => {
                     documents.push({ id: doc.id, ...doc.data() });
@@ -38,7 +38,8 @@ const Fetch = () => {
         };
 
         fetchAll();
-    }, [user]); 
+    }, [user]);
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Fetched Documents</h1>
