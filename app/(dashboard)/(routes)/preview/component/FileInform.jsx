@@ -26,7 +26,7 @@ const FileInform = ({ file, pdfPreviewUrl }) => {
       {fileType === 'application/pdf' ? (
         <iframe
           title={`PDF Preview - ${fileName}`}
-          src={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${filePreview}`}
+          src={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(filePreview)}`}
           width="100%"
           height="500px"
           style={{ border: 'none' }}
