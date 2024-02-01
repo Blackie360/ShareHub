@@ -30,57 +30,53 @@ const Upload = () => {
     return result;
   };
 
-  const uploadFile = async (file) => {
-    try {
-      const metadata = { contentType: file.type };
-      const storageRef = ref(getStorage(app), 'file-upload/' + file?.name);
-      const uploadTask = uploadBytesResumable(storageRef, file,file.type);
-  
-      uploadTask.on('state_changed', snapshot => {
-        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        setProgress(progress);
-      }, error => {
-        console.error('Error uploading file:', error.message);
-      }, async () => {
-        try {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          saveInfo(file, downloadURL);
-        } catch (error) {
-          console.error('Error getting download URL:', error.message);
-        }
-      });
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
-  };
-  
+const uploadFile = async (file) => {
+  try {
+    const metadata = { contentType: file.type };
+    const storageRef = ref(getStorage(app), 'file-upload/' + file?.name);
+    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+
+    uploadTask.on('state_changed', snapshot => { //usisheke hapa nimeteseka sana
+      const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+      setProgress(progress);
+    }, error => {
+      console.error('Error uploading file:', error.message);
+    }, async () => {
+      // Upload completed successfully
+      try {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        saveInfo(file, downloadURL);
+      } catch (error) {
+        console.error('Error getting download URL:', error.message);
+      }
+    });
+
+
+  } catch (error) {
+    console.error('Error uploading file:', error.message);
+  }
+};
+
 
   const saveInfo = async (file, downloadURL) => {
-    try {
-      const docId = randomString();
-  
-      const docRef = doc(db, "uploadedFile", docId);
-  
-      await setDoc(docRef, {
-        fileName: file?.name,
-        fileSize: file?.size,
-        fileType: file?.type,
-        fileUrl: downloadURL,
-        userEmail: user?.primaryEmailAddress?.emailAddress,
-        userName: user?.fullName,
-        password: '',
-        id: docId,
-        shortUrl: process.env.NEXT_PUBLIC_BASE_URL + randomString()
-      });
-  
-      console.log("Document successfully written!");
-      
-      router.push('/preview/' + docId);
-    } catch (error) {
-      console.error('Error saving document:', error);
-    }
+    
+    const docId = randomString();
+
+    await setDoc(doc(db, "uploadedFile", docId), {
+      fileName: file?.name,
+      fileSize: file?.size,
+      fileType: file?.type,
+      fileUrl: downloadURL,
+      userEmail: user?.primaryEmailAddress?.emailAddress,
+      userName: user?.fullName,
+      password: '',
+      id: docId,
+      shortUrl: process.env.NEXT_PUBLIC_BASE_URL + randomString()
+    });
+
+    router.push('/preview/' + docId);
+
   };
-  
 
   return (
     <div>
