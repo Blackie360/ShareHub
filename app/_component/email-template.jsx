@@ -54,7 +54,7 @@ const EmailTemplate = ({ fileName, fileSize, fileType, shortLink }) => {
         </p>
 
         <p className="mt-3">
-          © {new Date().getFullYear()} All Rights Reserved.
+        &#39 {new Date().getFullYear()} All Rights Reserved.
         </p>
       </footer>
     </section>
