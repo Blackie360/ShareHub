@@ -42,7 +42,7 @@ const EmailTemplate = ({ fileName, fileSize, fileType, shortLink }) => {
 
       <footer className="mt-8 text-sm text-gray-500 dark:text-gray-400">
         <p>
-          This email was sent to you. If you'd rather not receive this kind of email, you can{' '}
+          This email was sent to you. If you&apos;d rather not receive this kind of email, you can{' '}
           <a href="#" className="text-blue-600 hover:underline dark:text-blue-400">
             unsubscribe
           </a>{' '}
