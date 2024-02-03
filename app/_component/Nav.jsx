@@ -93,10 +93,10 @@ const Nav = () => {
               <a className="text-gray-500" href="/upload"> Upload </a>
             </li>
             <li>
-              <a className="text-gray-500" href="/"> About Us</a>
+              <a className="text-gray-500" href="/about"> About Us</a>
             </li>
             <li>
-              <a className="text-gray-500" href="/"> Contact Us </a>
+              <a className="text-gray-500" href="/contact"> Contact Us </a>
             </li>
           </ul>
         </div>
