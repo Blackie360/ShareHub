@@ -10,7 +10,7 @@ export default function Page() {
         alt="Night"
         width={50}
         height={50}
-        src=""
+        src="folder.png"
         className="absolute inset-0 h-full w-full object-cover opacity-80"
       />
 
@@ -19,7 +19,7 @@ export default function Page() {
           <span className="text-blue-500">shareHub </span>
           <div className="md:flex md:items-center md:gap-12">
    <Image
-      src="/logo.svg"
+      src="/folder.png"
       width={50}
     height={40} 
     alt="logo"
