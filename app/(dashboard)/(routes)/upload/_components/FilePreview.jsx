@@ -6,7 +6,7 @@ const FilePreview = ({file, removeFile}) => {
   return (
     <div className='flex items-center gap-2 jusifty-between  mt-5 border rounded-md p-2 border-purple-500 '>
       <div className='flex items-center p-2'>
-      <Image src='/file.png'
+      <Image src='/folder.png'
      width={50}
      height={50}
      alt='file'
