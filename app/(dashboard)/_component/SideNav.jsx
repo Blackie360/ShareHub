@@ -16,7 +16,12 @@ const SideNav = () => {
       path: '/upload',
       icon: Upload 
     },
-    
+    {
+      id:2,
+      name: 'Files',
+      path: '/files',
+      icon: File
+    }
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
