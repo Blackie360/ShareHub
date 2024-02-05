@@ -54,13 +54,11 @@ const FileItem = ({ file }) => {
   const handleViewOnline = () => {
     // Check if password protection is enabled and the entered password matches the file's password
     if (!file.password || (password === file.password)) {
-      // Password is correct or no password is set, redirect to the file URL for viewing online
-      console.log('Password is correct. Redirecting to view online...');
+     
       setIsPasswordCorrect(true);
       window.location.href = file.fileUrl;
     } else {
-      // Password is incorrect
-      console.log('Password is incorrect. View online failed.');
+      
       setIsPasswordCorrect(false);
     }
   };
